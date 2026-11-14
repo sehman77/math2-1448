@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>لوحة المعلم | جاهز للتحصيلي</title>
+<title>لوحة المعلم | قِطاف</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Cairo:wght@500;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap">
 <style>
 /* Layout: teacher console — summary tiles, filters, sortable student table with WhatsApp actions, add-student panel */
 :root{
@@ -30,7 +31,14 @@ button,select,input{font-size:15px;color:inherit}
 .wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 header{background:var(--brand);color:var(--brand-ink)}
 header .wrap{padding-block:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-header h1{margin:0;font-size:22px;font-weight:800}
+header h1{margin:0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand .mark{width:54px;height:54px;flex:none}
+.brand .nm{display:flex;flex-direction:column;line-height:1.1}
+.brand .ar{font-family:"Aref Ruqaa","Traditional Arabic",serif;font-weight:700;font-size:34px}
+.brand .en{font-family:"Cairo",sans-serif;font-weight:800;font-size:11px;letter-spacing:.42em;color:#F2C063;direction:ltr;text-align:right}
+.brand .tg{font-family:"Aref Ruqaa","Traditional Arabic",serif;font-size:15px;opacity:.92;margin-top:3px}
+
 header .sub{font-family:var(--head);font-size:13px;opacity:.85}
 header .sp{flex:1}
 .hbtn{background:transparent;color:inherit;border:1px solid currentColor;border-radius:8px;padding:5px 14px;cursor:pointer;font-weight:700}
@@ -83,7 +91,7 @@ footer{text-align:center;color:var(--muted);font-family:var(--head);font-size:13
 </head>
 <body>
 <header><div class="wrap">
-  <div><h1>متابعة جاهز للتحصيلي</h1><div class="sub">رياضيات الثاني المتوسط · متوسطة بدر الكبرى</div></div>
+  <a class="brand" href="./"><svg class="mark" viewBox="0 0 120 120" aria-hidden="true"><path d="M14 30 C 38 20, 62 22, 84 40" stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M36 25 C 34 9, 52 2, 60 6 C 56 18, 46 26, 36 25 Z" fill="#43B581"/><path d="M58 26 C 66 12, 84 12, 88 18 C 80 28, 68 31, 58 26 Z" fill="#6CCB9A"/><path d="M84 40 L 80 54" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><circle cx="74" cy="80" r="28" fill="#E3A33A"/><circle cx="64" cy="68" r="7" fill="#FFFFFF" opacity=".28"/><path d="M61 81 l9 9 l17 -19" stroke="#FFFFFF" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="nm"><h1 class="ar">قِطاف</h1><span class="en">QITAF</span><span class="tg">لوحة المعلم · متوسطة بدر الكبرى</span></div></a>
   <span class="sp"></span>
   <button class="hbtn" id="addBtn">+ إضافة طالب</button>
   <button class="hbtn" id="refresh">تحديث</button>
@@ -107,7 +115,7 @@ footer{text-align:center;color:var(--muted);font-family:var(--head);font-size:13
     <tbody id="rows"><tr><td colspan="9" style="text-align:center;color:var(--muted)">لا توجد بيانات بعد.</td></tr></tbody>
   </table></div>
 </main>
-<footer>البيانات من جدول «متابعة رياضيات ثاني متوسط» في Google Drive · فكرة وإعداد / محمد آل سحمان</footer>
+<footer>البيانات من جدول «متابعة رياضيات ثاني متوسط» في Google Drive · فكرة وإعداد / محمد آل سحمان · <a href="http://me.binsehman.com/" target="_blank" rel="noopener" style="color:inherit">me.binsehman.com</a></footer>
 
 <dialog id="keyDlg">
   <h2>دخول المعلم</h2>
@@ -131,7 +139,7 @@ footer{text-align:center;color:var(--muted);font-family:var(--head);font-size:13
   </form>
 </dialog>
 
-<script src="config.js?v=21"></script>
+<script src="config.js?v=23"></script>
 <script>
 const API=(typeof API_URL!=='undefined'&&API_URL)||'';
 const KKEY='math2-teacher-key';
@@ -186,10 +194,10 @@ function message(s){
   const head=`السلام عليكم ورحمة الله وبركاته\nولي أمر الطالب: ${s.name} المحترم\n\n`;
   const sign=`\n\nمعلم الرياضيات: محمد آل سحمان`;
   const body={
-    ok:`يسرّنا إبلاغكم بتميّز ابنكم في منصة «جاهز للتحصيلي» لمادة الرياضيات، إذ بلغ متوسط درجاته ${pct}. ما شاء الله تبارك الله.\nنشكر لكم حسن متابعتكم، ونرجو تشجيعه على الاستمرار في هذا التميّز.`,
-    mid:`نفيدكم بأن ابنكم يسير بمستوى جيد في منصة «جاهز للتحصيلي» لمادة الرياضيات، بمتوسط ${pct}.\nنأمل تشجيعه على إعادة التدريب في الدروس التي لم يتقنها؛ ليصل إلى الإتقان بإذن الله تعالى.`,
-    low:`نفيدكم بأن متوسط ابنكم في منصة «جاهز للتحصيلي» لمادة الرياضيات بلغ ${pct}، ويحتاج إلى متابعتكم الكريمة.\nنرجو حثّه على مشاهدة شروحات منصة عيان: ayyan.binsehman.com\nثم إعادة التدريب على المنصة: math.binsehman.com`,
-    none:`نفيدكم بأن ابنكم لم يدخل منصة «جاهز للتحصيلي» لمادة الرياضيات حتى الآن.\nنرجو حثّه على الدخول ببريده المدرسي عبر الرابط: math.binsehman.com\nوالتدرّب استعدادًا للاختبار التحصيلي.`
+    ok:`يسرّنا إبلاغكم بتميّز ابنكم في منصة «قِطاف» لمادة الرياضيات، إذ بلغ متوسط درجاته ${pct}. ما شاء الله تبارك الله، وذلك بتوفيق الله جل وعلا.\nنشكر لكم حسن متابعتكم، ونرجو تشجيعه على الاستمرار في هذا التميّز.`,
+    mid:`نفيدكم بأن ابنكم يسير بمستوى جيد في منصة «قِطاف» لمادة الرياضيات، بمتوسط ${pct}.\nنأمل تشجيعه على إعادة التدريب في الدروس التي لم يتقنها؛ ليصل إلى الإتقان بإذن الله تعالى.`,
+    low:`نفيدكم بأن متوسط ابنكم في منصة «قِطاف» لمادة الرياضيات بلغ ${pct}، ويحتاج إلى متابعتكم الكريمة.\nنرجو حثّه على مشاهدة شروحات منصة عيان: ayyan.binsehman.com\nثم إعادة التدريب على المنصة: math.binsehman.com`,
+    none:`نفيدكم بأن ابنكم لم يدخل منصة «قِطاف» لمادة الرياضيات حتى الآن.\nنرجو حثّه على الدخول ببريده المدرسي عبر الرابط: math.binsehman.com\nوالتدرّب استعدادًا للاختبار التحصيلي.`
   }[s.cat];
   return head+body+sign;
 }

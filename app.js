@@ -1,4 +1,4 @@
-/* جاهز للتحصيلي — منطق البرنامج */
+/* قِطاف — منطق البرنامج */
 const app = document.getElementById('app');
 const SKEY = 'math2-student', PKEY = 'math2-progress', QKEY = 'math2-queue';
 const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch (e) { return d } };
@@ -42,7 +42,7 @@ async function record(lesson, score, total) {
 const syncText = s => s === 'saved' ? 'أُرسلت النتيجة إلى المعلم' : s === 'pending' ? 'لم تُرسل النتيجة بعد، وستُرسل تلقائيًّا عند عودة الاتصال' : 'وضع التجربة: النتيجة محفوظة في جهازك فقط';
 const AYYAN = 'https://ayyan.binsehman.com/';
 const ayyanBox = () => `<div class="ayyan">📺 شاهد شرح الدرس على منصة <a href="${AYYAN}" target="_blank" rel="noopener">عيان</a>، ثم أعد المحاولة.</div>`;
-const cheer = r => r === 1 ? 'ما شاء الله! إتقان كامل، واصل تميّزك.' : r >= .6 ? 'أحسنت! بقيت خطوة صغيرة وتصل إلى الإتقان.' : 'لا بأس، كل محاولة تقرّبك من الإتقان بإذن الله تعالى. راجع الدرس وأعد المحاولة.';
+const cheer = r => r === 1 ? 'ما شاء الله! إتقان كامل بتوفيق الله، واصل تميّزك.' : r >= .6 ? 'أحسنت! بقيت خطوة صغيرة وتصل إلى الإتقان بإذن الله تعالى.' : 'لا بأس، كل محاولة تقرّبك من الإتقان بإذن الله تعالى. راجع الدرس وأعد المحاولة.';
 function showSync(el, state, ratio) {
   el.className = 'sync ' + state + ' ' + (ratio === 1 ? 'lvl-top' : ratio >= .6 ? 'lvl-mid' : 'lvl-low');
   el.innerHTML = `<span class="ic"><b>${state === 'saved' ? '✓' : state === 'pending' ? '!' : 'i'}</b></span><span>${syncText(state)}<span class="cheer">${cheer(ratio)}</span></span>`;
