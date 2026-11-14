@@ -87,12 +87,68 @@ dialog h2{margin:0 0 10px;font-size:20px}
 .msg.ok{background:var(--ok-soft);color:var(--ok)} .msg.bad{background:var(--bad-soft);color:var(--bad)}
 .row{display:flex;gap:8px;justify-content:flex-start;margin-top:6px}
 footer{text-align:center;color:var(--muted);font-family:var(--head);font-size:13px;padding:20px}
+
+/* ===== التقارير ===== */
+#print{display:none}
+@page{size:A4;margin:12mm 11mm}
+@media print{
+  body{background:#fff!important;color:#14262a!important;font-size:12.5px}
+  body>*:not(#print){display:none!important}
+  body::before{display:none}
+  #print{display:block}
+  .rp{page-break-after:always;break-after:page;min-height:268mm;display:flex;flex-direction:column}
+  .rp:last-child{page-break-after:auto;break-after:auto}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+.rh{display:flex;align-items:center;gap:12px;border-bottom:3px solid #0E5E66;padding-bottom:10px;margin-bottom:12px}
+.rmark{width:58px;height:58px;flex:none}
+.rh-t{flex:1}
+.rh-brand{font-family:"Aref Ruqaa",serif;font-weight:700;font-size:30px;color:#0E5E66;line-height:1}
+.rh-brand span{font-family:"Cairo",sans-serif;font-size:10px;letter-spacing:.4em;color:#C98A1E;margin-inline-start:6px}
+.rh-school{font-family:"Cairo",sans-serif;font-size:12px;color:#475a5d;margin-top:4px}
+.rh-meta{text-align:left;font-family:"Cairo",sans-serif;display:flex;flex-direction:column;gap:2px}
+.rh-meta b{font-size:17px;color:#0E5E66}
+.rh-meta span{font-size:12px;color:#475a5d}
+.rt{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:12px}
+.rt div{border:1px solid #d6e0df;border-radius:8px;padding:6px 8px;text-align:center;background:#f6f9f9}
+.rt b{display:block;font-family:"Cairo",sans-serif;font-size:18px;color:#0E5E66}
+.rt small{font-size:11px;color:#475a5d}
+.rt span{font-family:"Cairo",sans-serif;font-size:11px;color:#475a5d}
+.rtab{width:100%;min-width:0;border-collapse:collapse;font-family:"Cairo",sans-serif;font-size:12px}
+.rtab th{background:#0E5E66;color:#fff;padding:5px 6px;font-weight:700;text-align:right}
+.rtab td{border-bottom:1px solid #e1e8e7;padding:4px 6px}
+.rtab tr:nth-child(even) td{background:#f6f9f9}
+.rtab td.nm{font-weight:700}
+.rtab.sm{table-layout:fixed}
+.rtab.sm td{padding:2px 6px;font-size:11px;overflow-wrap:anywhere}
+.rtab .muted{color:#9aa8aa}
+.chip.c-ok{background:#DCF2E6;color:#1B7F4E}.chip.c-mid{background:#FCEFD8;color:#9A5B05}.chip.c-low{background:#F8E0DE;color:#B3362F}.chip.c-none{background:#ECEEF0;color:#6B7280}
+.sinfo{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.sinfo div{border:1px solid #d6e0df;border-radius:8px;padding:6px 10px;display:flex;justify-content:space-between;align-items:center;font-family:"Cairo",sans-serif}
+.sinfo span{font-size:12px;color:#475a5d}
+.sinfo b{font-size:14px}
+.rec{border-inline-start:4px solid #E3A33A;background:#FDF6EA;padding:8px 12px;border-radius:6px;margin-bottom:10px;font-size:13px}
+.chs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px;align-items:start}
+.sch{break-inside:avoid;margin-bottom:8px;min-width:0;overflow:hidden}
+.sch h4{margin:0 0 3px;font-family:"Cairo",sans-serif;font-size:12.5px;color:#0E5E66;display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.sch h4 span{font-weight:600;color:#475a5d;font-size:11px}
+.stack{display:flex;height:16px;border-radius:4px;overflow:hidden;background:#eef2f2}
+.stack i{display:grid;place-items:center;font-style:normal;font-size:10px;font-weight:700;color:#14262a}
+.stack i.c-ok{background:#9ADBB8}.stack i.c-mid{background:#F5D08F}.stack i.c-low{background:#F0A9A3}.stack i.c-none{background:#D5DADF}
+.legend{display:flex;gap:14px;font-family:"Cairo",sans-serif;font-size:11px;margin:6px 0 12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-inline-end:4px;vertical-align:middle}
+.legend i.c-ok{background:#9ADBB8}.legend i.c-mid{background:#F5D08F}.legend i.c-low{background:#F0A9A3}.legend i.c-none{background:#D5DADF}
+.rh3{font-family:"Cairo",sans-serif;font-size:15px;color:#0E5E66;margin:6px 0}
+.rf{margin-top:auto;padding-top:14px}
+.sign{display:flex;justify-content:space-between;font-family:"Cairo",sans-serif;font-size:12.5px;font-weight:700;margin-bottom:8px}
+.rf-b{border-top:1px solid #d6e0df;padding-top:6px;text-align:center;font-family:"Cairo",sans-serif;font-size:10.5px;color:#475a5d}
 </style>
 </head>
 <body>
 <header><div class="wrap">
   <a class="brand" href="./"><svg class="mark" viewBox="0 0 120 120" aria-hidden="true"><path d="M14 30 C 38 20, 62 22, 84 40" stroke="#FFFFFF" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M36 25 C 34 9, 52 2, 60 6 C 56 18, 46 26, 36 25 Z" fill="#43B581"/><path d="M58 26 C 66 12, 84 12, 88 18 C 80 28, 68 31, 58 26 Z" fill="#6CCB9A"/><path d="M84 40 L 80 54" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><circle cx="74" cy="80" r="28" fill="#E3A33A"/><circle cx="64" cy="68" r="7" fill="#FFFFFF" opacity=".28"/><path d="M61 81 l9 9 l17 -19" stroke="#FFFFFF" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="nm"><h1 class="ar">قِطاف</h1><span class="en">QITAF</span><span class="tg">لوحة المعلم · متوسطة بدر الكبرى</span></div></a>
   <span class="sp"></span>
+  <button class="hbtn" id="repBtn">التقارير PDF</button>
   <button class="hbtn" id="addBtn">+ إضافة طالب</button>
   <button class="hbtn" id="refresh">تحديث</button>
   <button class="hbtn" id="logout">خروج</button>
@@ -126,6 +182,23 @@ footer{text-align:center;color:var(--muted);font-family:var(--head);font-size:13
   </form>
 </dialog>
 
+<dialog id="repDlg">
+  <h2>التقارير</h2>
+  <form class="form" id="repForm">
+    <label>نوع التقرير<select id="rKind">
+      <option value="class">تقرير الفصل: الطلاب مرتبون بالمتوسط والتصنيف</option>
+      <option value="students">تقارير الطلاب: صفحة لكل طالب لولي الأمر</option>
+      <option value="both">التقرير الشامل: الفصل ثم صفحة لكل طالب</option>
+      <option value="admin">التقرير الإحصائي للإدارة: مقارنة الفصول</option>
+    </select></label>
+    <label id="rClsL">الفصل<select id="rCls"><option value="">كل الفصول</option><option>الثاني أ</option><option>الثاني ب</option><option>الثاني ج</option></select></label>
+    <p class="muted" style="margin:0;font-size:14px">ستفتح نافذة الطباعة: اختر «حفظ بتنسيق PDF» من خانة الطابعة، ثم اضغط «حفظ».</p>
+    <div class="row"><button class="btn pri" type="submit">إنشاء التقرير</button><button class="btn" type="button" id="rClose">إغلاق</button></div>
+  </form>
+</dialog>
+
+<div id="print"></div>
+
 <dialog id="dlg">
   <h2>إضافة طالب</h2>
   <form class="form" id="addForm">
@@ -139,7 +212,9 @@ footer{text-align:center;color:var(--muted);font-family:var(--head);font-size:13
   </form>
 </dialog>
 
-<script src="config.js?v=23"></script>
+<script src="config.js?v=30"></script>
+<script src="common.js?v=30"></script>
+<script src="reports.js?v=30"></script>
 <script>
 const API=(typeof API_URL!=='undefined'&&API_URL)||'';
 const KKEY='math2-teacher-key';
@@ -253,6 +328,12 @@ $('addForm').onsubmit=async e=>{
   }finally{b.disabled=false;b.textContent='حفظ الطالب'}
 };
 
+window.getStudents=()=>students;
+const rDlg=$('repDlg');
+$('repBtn').onclick=()=>{if(!students.length){setStatus('حمّل بيانات الطلاب أولًا.',true);return}rDlg.showModal()};
+$('rClose').onclick=()=>rDlg.close();
+$('rKind').onchange=()=>{$('rClsL').hidden=$('rKind').value==='admin'};
+$('repForm').onsubmit=e=>{e.preventDefault();rDlg.close();buildReport($('rKind').value,$('rCls').value)};
 load();
 </script>
 </body>
