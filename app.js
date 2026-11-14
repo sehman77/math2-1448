@@ -217,3 +217,24 @@ addEventListener('hashchange', () => {
   route();
 });
 route(); flush();
+
+/* ---------- الأرقام العربية في كل الصفحة ---------- */
+const AD = '٠١٢٣٤٥٦٧٨٩';
+function toArabicDigits(text, inMath) {
+  let r = text.replace(/(\d)\.(\d)/g, '$1٫$2').replace(/%/g, '٪').replace(/\d/g, d => AD[d]);
+  if (inMath) r = r.replace(/([٠-٩٫]+)/g, '‎$1‎');
+  return r;
+}
+function arabize(root) {
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => /[0-9%]/.test(n.data) && !n.data.includes('@') && !n.parentElement.closest('input,textarea,script,style')
+      ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+  });
+  const nodes = []; while (w.nextNode()) nodes.push(w.currentNode);
+  nodes.forEach(n => { n.data = toArabicDigits(n.data, !!n.parentElement.closest('.mx')) });
+}
+arabize(document.body);
+new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => {
+  if (n.nodeType === 1) arabize(n);
+  else if (n.nodeType === 3 && n.parentElement) arabize(n.parentElement);
+}))).observe(document.body, { childList: true, subtree: true });
