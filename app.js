@@ -63,7 +63,7 @@ function viewLogin() {
     <div class="hero-en">QITAF</div>
     <div class="hero-tg">ازرَع جهدَك، تقطف تميُّزَك بإذن الله تعالى</div>
     <div class="hero-sub">مشروعٌ لتأصيل معارف ومهارات منهج مادة الرياضيات<br>الصف الثاني المتوسط</div>
-    <div class="hero-by"><a href="http://me.binsehman.com/" target="_blank" rel="noopener">محمد آل سحمان</a><span>متوسطة بدر الكبرى - خميس مشيط</span></div>
+    <div class="hero-by">فكرة وإعداد / <a href="http://me.binsehman.com/" target="_blank" rel="noopener">محمد آل سحمان</a><span>متوسطة بدر الكبرى - خميس مشيط</span></div>
   </section>
   <section class="doors">
   <div class="login card">
