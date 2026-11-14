@@ -39,7 +39,7 @@ async function record(lesson, score, total) {
   await flush();
   return load(QKEY, []).length ? 'pending' : 'saved';
 }
-const syncText = s => s === 'saved' ? 'أُرسلت نتيجتك إلى معلمك بنجاح' : s === 'pending' ? 'لم تُرسل النتيجة بعد، وستُرسل تلقائيًّا عند عودة الاتصال' : 'وضع التجربة: النتيجة محفوظة في جهازك فقط';
+const syncText = s => s === 'saved' ? 'أُرسلت نتيجتك إلى المعلم بنجاح' : s === 'pending' ? 'لم تُرسل النتيجة بعد، وستُرسل تلقائيًّا عند عودة الاتصال' : 'وضع التجربة: النتيجة محفوظة في جهازك فقط';
 function showSync(el, state) {
   el.className = 'sync ' + state;
   el.innerHTML = `<span class="ic"><b>${state === 'saved' ? '✓' : state === 'pending' ? '!' : 'i'}</b></span><span>${syncText(state)}</span>`;
@@ -54,7 +54,7 @@ function header() {
 function viewLogin() {
   app.innerHTML = `<div class="login card">
     <h2>أهلًا بك</h2>
-    <p class="muted">ادخل ببريدك الإلكتروني المسجّل عند معلمك، لتُحفظ نتائجك باسمك.</p>
+    <p class="muted">ادخل ببريدك الإلكتروني المسجّل عند المعلم، لتُحفظ نتائجك باسمك.</p>
     <label for="em">البريد الإلكتروني</label>
     <input id="em" type="email" autocomplete="email" placeholder="name@example.com">
     <button class="btn pri" id="go" style="width:100%">دخول</button>
@@ -69,7 +69,7 @@ function viewLogin() {
       const r = await api({ action: 'check', email });
       if (r.ok) { student = { email, name: r.name, cls: r.cls }; }
       else if (r.error === 'no_api') { student = { email, name: '', cls: '' }; }
-      else { m.innerHTML = '<div class="msg bad">هذا البريد غير مسجّل. تأكد من كتابته كما سلّمته لمعلمك.</div>'; go.disabled = false; go.textContent = 'دخول'; return }
+      else { m.innerHTML = '<div class="msg bad">هذا البريد غير مسجّل. تأكد من كتابته كما سلّمته للمعلم.</div>'; go.disabled = false; go.textContent = 'دخول'; return }
       store(SKEY, student); route();
     } catch (e) {
       m.innerHTML = '<div class="msg bad">تعذّر الاتصال. تأكد من الإنترنت ثم حاول مرة أخرى.</div>'; go.disabled = false; go.textContent = 'دخول';
@@ -160,7 +160,7 @@ function viewLesson(id) {
   const qz = app.querySelector('#qz');
   qz.appendChild(quiz(d.quiz, async (sc, per, box) => {
     const s = document.createElement('div'); s.className = 'score';
-    s.innerHTML = `<b>${sc} / ${d.quiz.length}</b><span>${sc === d.quiz.length ? 'إتقان كامل!' : sc >= 2 ? 'جيد. راجع السؤال الذي أخطأت فيه.' : 'راجع القانون والخطأ الشائع ثم أعد المحاولة.'}</span><span class="sync">جارٍ إرسال نتيجتك إلى معلمك…</span><span style="flex:1"></span><button class="btn" id="ag">أعد المحاولة</button>`;
+    s.innerHTML = `<b>${sc} / ${d.quiz.length}</b><span>${sc === d.quiz.length ? 'إتقان كامل!' : sc >= 2 ? 'جيد. راجع السؤال الذي أخطأت فيه.' : 'راجع القانون والخطأ الشائع ثم أعد المحاولة.'}</span><span class="sync">جارٍ إرسال نتيجتك إلى المعلم…</span><span style="flex:1"></span><button class="btn" id="ag">أعد المحاولة</button>`;
     box.prepend(s); s.querySelector('#ag').onclick = () => viewLesson(id);
     const ids = readyIn(c), i = ids.indexOf(id), nxt = ids[i + 1];
     const nx = document.createElement('div'); nx.className = 'bar-row';
@@ -188,7 +188,7 @@ function viewTest(tid) {
     const ids = Object.keys(by).sort();
     const weak = ids.filter(i => by[i][0] / by[i][1] < .6);
     const r = document.createElement('div');
-    r.innerHTML = `<div class="score"><b>${sc} / ${qs.length}</b><span>${Math.round(sc / qs.length * 100)}٪</span><span class="sync">جارٍ إرسال نتيجتك إلى معلمك…</span></div>
+    r.innerHTML = `<div class="score"><b>${sc} / ${qs.length}</b><span>${Math.round(sc / qs.length * 100)}٪</span><span class="sync">جارٍ إرسال نتيجتك إلى المعلم…</span></div>
     <h3>نتيجتك في كل درس</h3>
     <div class="rep">${ids.map(i => { const [a, n] = by[i], x = a / n; return `<div><span>${i} ${lessonTitle(i)}</span><span class="meter"><i class="${x < .5 ? 'lo' : x < .85 ? 'mid' : ''}" style="width:${x * 100}%"></i></span><span>${a}/${n}</span></div>` }).join('')}</div>
     ${weak.length ? `<p>راجع هذه الدروس: ${weak.map(i => `<a href="#l-${i}">${lessonTitle(i)}</a>`).join('، ')}</p>` : '<p>أداء ممتاز في كل الدروس.</p>'}`;
