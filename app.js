@@ -40,6 +40,8 @@ async function record(lesson, score, total) {
   return load(QKEY, []).length ? 'pending' : 'saved';
 }
 const syncText = s => s === 'saved' ? 'أُرسلت النتيجة إلى المعلم' : s === 'pending' ? 'لم تُرسل النتيجة بعد، وستُرسل تلقائيًّا عند عودة الاتصال' : 'وضع التجربة: النتيجة محفوظة في جهازك فقط';
+const AYYAN = 'https://ayyan.binsehman.com/';
+const ayyanBox = () => `<div class="ayyan">📺 شاهد شرح الدرس على منصة <a href="${AYYAN}" target="_blank" rel="noopener">عيان</a>، ثم أعد المحاولة.</div>`;
 const cheer = r => r === 1 ? 'ما شاء الله! إتقان كامل، واصل تميّزك.' : r >= .6 ? 'أحسنت! بقيت خطوة صغيرة وتصل إلى الإتقان.' : 'لا بأس، كل محاولة تقرّبك من الإتقان بإذن الله تعالى. راجع الدرس وأعد المحاولة.';
 function showSync(el, state, ratio) {
   el.className = 'sync ' + state + ' ' + (ratio === 1 ? 'lvl-top' : ratio >= .6 ? 'lvl-mid' : 'lvl-low');
@@ -55,7 +57,7 @@ function header() {
 function viewLogin() {
   app.innerHTML = `<div class="login card">
     <h2>دخول الطلاب</h2>
-    <p class="muted">ادخل ببريدك الإلكتروني المسجّل عند المعلم، لتُحفظ نتائجك باسمك.</p>
+    <p class="muted">ادخل ببريدك المدرسي، مثل: <bdi dir="ltr">s12345678@asrb.moe.gov.sa</bdi>، لتُحفظ نتائجك باسمك. ويستطيع طلاب وزارة التعليم من خارج المدرسة الدخول ببريدهم المدرسي أيضًا.</p>
     <label for="em">البريد الإلكتروني</label>
     <input id="em" type="email" autocomplete="email" placeholder="name@example.com">
     <button class="btn pri" id="go" style="width:100%">دخول</button>
@@ -64,7 +66,7 @@ function viewLogin() {
   <div class="login card teacher">
     <h2>دخول المعلم</h2>
     <p class="muted">لوحة متابعة الطلاب وإرسال الرسائل لأولياء الأمور.</p>
-    <a class="btn" href="https://claude.ai/artifact/H2oQC6raBvM2GmeF2ffoJY" target="_blank" rel="noopener" style="width:100%;text-decoration:none">فتح لوحة المتابعة</a>
+    <a class="btn" href="teacher.html" style="width:100%;text-decoration:none;color:var(--brand)">فتح لوحة المتابعة</a>
   </div>`;
   const em = app.querySelector('#em'), go = app.querySelector('#go'), m = app.querySelector('#m');
   const submit = async () => {
@@ -75,7 +77,7 @@ function viewLogin() {
       const r = await api({ action: 'check', email });
       if (r.ok) { student = { email, name: r.name, cls: r.cls }; }
       else if (r.error === 'no_api') { student = { email, name: '', cls: '' }; }
-      else { m.innerHTML = '<div class="msg bad">هذا البريد غير مسجّل. تأكد من كتابته كما سلّمته للمعلم.</div>'; go.disabled = false; go.textContent = 'دخول'; return }
+      else { m.innerHTML = '<div class="msg bad">هذا البريد غير مقبول. ادخل ببريدك المدرسي من وزارة التعليم.</div>'; go.disabled = false; go.textContent = 'دخول'; return }
       store(SKEY, student); route();
     } catch (e) {
       m.innerHTML = '<div class="msg bad">تعذّر الاتصال. تأكد من الإنترنت ثم حاول مرة أخرى.</div>'; go.disabled = false; go.textContent = 'دخول';
@@ -168,6 +170,7 @@ function viewLesson(id) {
     const s = document.createElement('div'); s.className = 'score';
     s.innerHTML = `<b>${sc} / ${d.quiz.length}</b><span>${sc === d.quiz.length ? 'إتقان كامل!' : sc >= 2 ? 'جيد. راجع السؤال الذي أخطأت فيه.' : 'راجع القانون والخطأ الشائع ثم أعد المحاولة.'}</span><span class="sync">جارٍ إرسال نتيجتك إلى المعلم…</span><span style="flex:1"></span><button class="btn" id="ag">أعد المحاولة</button>`;
     box.prepend(s); s.querySelector('#ag').onclick = () => viewLesson(id);
+    if (sc / d.quiz.length < .6) s.insertAdjacentHTML('afterend', ayyanBox());
     const ids = readyIn(c), i = ids.indexOf(id), nxt = ids[i + 1];
     const nx = document.createElement('div'); nx.className = 'bar-row';
     nx.innerHTML = nxt ? `<button class="btn pri">الدرس التالي: ${lessonTitle(nxt)} ←</button>` : `<button class="btn pri">اختبار الفصل ${c.n} ←</button>`;
@@ -197,7 +200,7 @@ function viewTest(tid) {
     r.innerHTML = `<div class="score"><b>${sc} / ${qs.length}</b><span>${Math.round(sc / qs.length * 100)}٪</span><span class="sync">جارٍ إرسال نتيجتك إلى المعلم…</span></div>
     <h3>نتيجتك في كل درس</h3>
     <div class="rep">${ids.map(i => { const [a, n] = by[i], x = a / n; return `<div><span>${i} ${lessonTitle(i)}</span><span class="meter"><i class="${x < .5 ? 'lo' : x < .85 ? 'mid' : ''}" style="width:${x * 100}%"></i></span><span>${a}/${n}</span></div>` }).join('')}</div>
-    ${weak.length ? `<p>راجع هذه الدروس: ${weak.map(i => `<a href="#l-${i}">${lessonTitle(i)}</a>`).join('، ')}</p>` : '<p>أداء ممتاز في كل الدروس.</p>'}`;
+    ${weak.length ? `<p>راجع هذه الدروس: ${weak.map(i => `<a href="#l-${i}">${lessonTitle(i)}</a>`).join('، ')}</p>${ayyanBox()}` : '<p>أداء ممتاز في كل الدروس.</p>'}`;
     b.prepend(r); scrollTo({ top: 0, behavior: 'smooth' });
     showSync(r.querySelector('.sync'), await record(t.key, sc, qs.length), sc / qs.length);
   }, true);

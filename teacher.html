@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة المعلم | جاهز للتحصيلي</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap">
+<style>
+/* Layout: teacher console — summary tiles, filters, sortable student table with WhatsApp actions, add-student panel */
+:root{
+  --bg:#F3F6F5;--card:#FFFFFF;--sunk:#E9EFEE;--ink:#15262A;--muted:#5A6D70;--line:#D6E0DF;
+  --brand:#0E5E66;--brand-ink:#FFFFFF;--brand-soft:#DDEEEE;
+  --ok:#1B7F4E;--ok-soft:#DCF2E6;--warn:#9A5B05;--warn-soft:#FCEFD8;--bad:#B3362F;--bad-soft:#F8E0DE;--none:#6B7280;--none-soft:#ECEEF0;--wa:#1F9D55;
+  --head:"Cairo",Tahoma,sans-serif;--text:"Noto Naskh Arabic","Traditional Arabic",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1719;--card:#162124;--sunk:#1C2A2D;--ink:#E5EEEE;--muted:#9BB0B2;--line:#2A3B3E;
+  --brand:#4FB3B9;--brand-ink:#0F1719;--brand-soft:#173638;
+  --ok:#57C98E;--ok-soft:#163626;--warn:#E7AE52;--warn-soft:#3A2D16;--bad:#EF7B73;--bad-soft:#3D1D1B;--none:#A3AAB5;--none-soft:#242C30;--wa:#3DCB7A;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1719;--card:#162124;--sunk:#1C2A2D;--ink:#E5EEEE;--muted:#9BB0B2;--line:#2A3B3E;
+  --brand:#4FB3B9;--brand-ink:#0F1719;--brand-soft:#173638;
+  --ok:#57C98E;--ok-soft:#163626;--warn:#E7AE52;--warn-soft:#3A2D16;--bad:#EF7B73;--bad-soft:#3D1D1B;--none:#A3AAB5;--none-soft:#242C30;--wa:#3DCB7A;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.7;direction:rtl}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--brand)}
+h1,h2,h3,button,label,select,input,th,.tile b,.chip{font-family:var(--head)}
+button,select,input{font-size:15px;color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{background:var(--brand);color:var(--brand-ink)}
+header .wrap{padding-block:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+header h1{margin:0;font-size:22px;font-weight:800}
+header .sub{font-family:var(--head);font-size:13px;opacity:.85}
+header .sp{flex:1}
+.hbtn{background:transparent;color:inherit;border:1px solid currentColor;border-radius:8px;padding:5px 14px;cursor:pointer;font-weight:700}
+main{padding-block:18px 50px}
+.status{padding:12px 16px;border-radius:10px;background:var(--sunk);margin-bottom:14px;font-family:var(--head)}
+.status.bad{background:var(--bad-soft);color:var(--bad)}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+@media (max-width:760px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:right;display:flex;flex-direction:column;gap:2px}
+.tile b{font-size:28px;line-height:1.2;font-variant-numeric:tabular-nums}
+.tile span{color:var(--muted);font-family:var(--head);font-size:13px}
+.tile.on{outline:2px solid var(--brand)}
+.tile.t-ok b{color:var(--ok)} .tile.t-mid b{color:var(--warn)} .tile.t-low b{color:var(--bad)} .tile.t-none b{color:var(--none)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0 10px}
+.bar select,.bar input{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 10px}
+.bar input{min-width:0;flex:1 1 200px}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 14px;cursor:pointer;font-weight:700}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.tbl{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:13px;color:var(--muted);font-weight:700;background:var(--sunk);cursor:pointer;white-space:nowrap}
+tbody tr:hover{background:var(--sunk)}
+td.num{font-family:var(--head);font-variant-numeric:tabular-nums;white-space:nowrap}
+.name{font-weight:700}
+.name small{display:block;font-family:var(--head);font-weight:500;color:var(--muted);font-size:12px}
+.chip{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:99px;white-space:nowrap}
+.c-ok{background:var(--ok-soft);color:var(--ok)} .c-mid{background:var(--warn-soft);color:var(--warn)} .c-low{background:var(--bad-soft);color:var(--bad)} .c-none{background:var(--none-soft);color:var(--none)}
+.meter{width:80px;height:7px;border-radius:99px;background:var(--sunk);overflow:hidden;display:inline-block;vertical-align:middle;margin-inline-start:6px}
+.meter i{display:block;height:100%}
+a.wa{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;color:var(--wa);text-decoration:none}
+a.wa svg{width:26px;height:26px}
+a.wa:hover{background:var(--ok-soft)}
+.nophone{font-family:var(--head);font-size:12px;color:var(--bad)}
+tr.detail td{background:var(--sunk);font-size:14px}
+.lessons{display:flex;flex-wrap:wrap;gap:6px}
+.lessons span{font-family:var(--head);font-size:12px;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1px 8px}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);width:min(520px,calc(100vw - 32px));padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+dialog h2{margin:0 0 10px;font-size:20px}
+.form{display:grid;gap:10px}
+.form label{display:grid;gap:4px;font-size:14px;font-weight:700}
+.form input,.form select{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:8px 10px;font-family:var(--head)}
+.form .ltr{direction:ltr;text-align:left}
+.msg{padding:8px 12px;border-radius:8px;font-family:var(--head);font-size:14px}
+.msg.ok{background:var(--ok-soft);color:var(--ok)} .msg.bad{background:var(--bad-soft);color:var(--bad)}
+.row{display:flex;gap:8px;justify-content:flex-start;margin-top:6px}
+footer{text-align:center;color:var(--muted);font-family:var(--head);font-size:13px;padding:20px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div><h1>متابعة جاهز للتحصيلي</h1><div class="sub">رياضيات الثاني المتوسط · متوسطة بدر الكبرى</div></div>
+  <span class="sp"></span>
+  <button class="hbtn" id="addBtn">+ إضافة طالب</button>
+  <button class="hbtn" id="refresh">تحديث</button>
+  <button class="hbtn" id="logout">خروج</button>
+</div></header>
+
+<main class="wrap">
+  <div class="status" id="status">جارٍ قراءة جدول المتابعة من Google Sheets…</div>
+  <div class="tiles" id="tiles"></div>
+  <div class="bar">
+    <select id="fCls" aria-label="الفصل"><option value="">كل الفصول</option></select>
+    <select id="fCat" aria-label="التصنيف">
+      <option value="">كل التصنيفات</option><option value="ok">متميز</option><option value="mid">جيد</option><option value="low">يحتاج متابعة</option><option value="none">لم يبدأ</option>
+    </select>
+    <input id="q" type="search" placeholder="ابحث باسم الطالب أو بريده">
+  </div>
+  <div class="tbl"><table>
+    <thead><tr>
+      <th data-s="rank">#</th><th data-s="name">الطالب</th><th data-s="cls">الفصل</th><th data-s="avg">المتوسط</th><th data-s="tries">المحاولات</th><th data-s="lessons">الدروس</th><th data-s="last">آخر نشاط</th><th data-s="cat">التصنيف</th><th>ولي الأمر</th>
+    </tr></thead>
+    <tbody id="rows"><tr><td colspan="9" style="text-align:center;color:var(--muted)">لا توجد بيانات بعد.</td></tr></tbody>
+  </table></div>
+</main>
+<footer>البيانات من جدول «متابعة رياضيات ثاني متوسط» في Google Drive · فكرة وإعداد / محمد آل سحمان</footer>
+
+<dialog id="keyDlg">
+  <h2>دخول المعلم</h2>
+  <form class="form" id="keyForm">
+    <label>رمز الدخول<input id="kIn" class="ltr" autocomplete="current-password" type="password" required></label>
+    <div id="kMsg"></div>
+    <div class="row"><button class="btn pri" type="submit">دخول</button><a class="btn" href="./" style="text-decoration:none">رجوع للبرنامج</a></div>
+  </form>
+</dialog>
+
+<dialog id="dlg">
+  <h2>إضافة طالب</h2>
+  <form class="form" id="addForm">
+    <label>البريد المدرسي<input id="aEmail" class="ltr" type="email" required placeholder="s12345678@asrb.moe.gov.sa"></label>
+    <label>اسم الطالب<input id="aName" required></label>
+    <label>الفصل<select id="aCls"><option>الثاني أ</option><option>الثاني ب</option><option>الثاني ج</option></select></label>
+    <label>اسم ولي الأمر<input id="aParent"></label>
+    <label>جوال ولي الأمر<input id="aPhone" class="ltr" inputmode="numeric" placeholder="05xxxxxxxx"></label>
+    <div id="aMsg"></div>
+    <div class="row"><button class="btn pri" id="aSave" type="submit">حفظ الطالب</button><button class="btn" type="button" id="aClose">إغلاق</button></div>
+  </form>
+</dialog>
+
+<script src="config.js?v=21"></script>
+<script>
+const API=(typeof API_URL!=='undefined'&&API_URL)||'';
+const KKEY='math2-teacher-key';
+let KEY='';try{KEY=localStorage.getItem(KKEY)||''}catch(e){}
+const AD='٠١٢٣٤٥٦٧٨٩', ar=x=>String(x).replace(/\d/g,d=>AD[d]).replace(/%/g,'٪');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const CAT={ok:['متميز','c-ok','t-ok'],mid:['جيد','c-mid','t-mid'],low:['يحتاج متابعة','c-low','t-low'],none:['لم يبدأ','c-none','t-none']};
+let students=[], sortKey='avg', sortDir=-1, tileCat='';
+
+const $=id=>document.getElementById(id);
+function setStatus(t,bad){const s=$('status');s.textContent=t;s.className='status'+(bad?' bad':'');s.hidden=!t}
+const valuesOf=p=>(p&&(p.values||(p.content&&p.content.values)))||[];
+
+async function api(params){const r=await fetch(API+'?'+new URLSearchParams(params),{redirect:'follow'});return r.json()}
+function askKey(msg){$('kMsg').innerHTML=msg?`<div class="msg bad">${msg}</div>`:'';$('kIn').value='';if(!$('keyDlg').open)$('keyDlg').showModal()}
+async function load(){
+  if(!API){setStatus('رابط الخادم غير مضبوط في config.js.',true);return}
+  if(!KEY){setStatus('أدخل رمز المعلم.');askKey();return}
+  setStatus('جارٍ قراءة جدول المتابعة…');
+  try{
+    const d=await api({action:'dashboard',key:KEY});
+    if(!d.ok){if(d.error==='bad_key'){try{localStorage.removeItem(KKEY)}catch(e){}KEY='';askKey('رمز الدخول غير صحيح.');setStatus('أدخل رمز المعلم.');return}setStatus('تعذّر قراءة الجدول: '+(d.error||''),true);return}
+    build(d.students.map(s=>[s.email,s.name,s.cls,s.status,s.parent,s.phone]),d.results.map(r=>[r.t,r.email,'',r.lesson,r.score,r.total]));
+    setStatus(d.guests?`زوار من طلاب الوزارة حلّوا ${ar(d.guests)} محاولة (محفوظة في ورقة «نتائج الزوار»).`:'');
+  }catch(e){setStatus('تعذّر الاتصال بالخادم. تأكد من الإنترنت ثم اضغط «تحديث».',true)}
+}
+$('keyForm').onsubmit=e=>{e.preventDefault();KEY=$('kIn').value.trim();try{localStorage.setItem(KKEY,KEY)}catch(e){}$('keyDlg').close();load()};
+$('logout').onclick=()=>{try{localStorage.removeItem(KKEY)}catch(e){}KEY='';students=[];$('rows').innerHTML='';$('tiles').innerHTML='';askKey();setStatus('أدخل رمز المعلم.')};
+function fmtT(t){const d=new Date(t);if(isNaN(d))return t||'';return ar(d.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}))}
+
+function build(stu,res){
+  const by={};
+  res.forEach((r,i)=>{const em=String(r[1]||'').trim().toLowerCase();if(!em)return;const sc=+r[4],tot=+r[5];if(!(tot>0))return;
+    (by[em]=by[em]||[]).push({t:r[0],lesson:String(r[3]||''),sc,tot,i})});
+  students=stu.filter(r=>r[0]&&r[2]).map(r=>{
+    const em=String(r[0]).trim().toLowerCase(), list=by[em]||[];
+    const avg=list.length?list.reduce((s,x)=>s+x.sc/x.tot,0)/list.length:null;
+    const best={};list.forEach(x=>{const k=x.lesson;best[k]=Math.max(best[k]??0,x.sc/x.tot)});
+    const lessons=Object.keys(best).filter(k=>/^\d+-\d+$/.test(k));
+    const cat=!list.length?'none':avg>=.85?'ok':avg>=.6?'mid':'low';
+    const last=list.length?list[list.length-1]:null;
+    return {email:em,name:r[1]||'',cls:r[2]||'',status:r[3]||'',parent:r[4]||'',phone:String(r[5]||'').replace(/\D/g,''),tries:list.length,avg,cat,best,lessons,last:last?last.t:'',lastI:last?last.i:-1};
+  });
+  const rk=[...students].sort((x,y)=>(y.avg??-1)-(x.avg??-1)||y.tries-x.tries);rk.forEach((s,i)=>s.rank=i+1);
+  const cls=[...new Set(students.map(s=>s.cls))].sort();
+  $('fCls').innerHTML='<option value="">كل الفصول</option>'+cls.map(c=>`<option>${esc(c)}</option>`).join('');
+  render();
+}
+
+function message(s){
+  const pct=s.avg==null?'':ar(Math.round(s.avg*100)+'%');
+  const head=`السلام عليكم ورحمة الله وبركاته\nولي أمر الطالب: ${s.name} المحترم\n\n`;
+  const sign=`\n\nمعلم الرياضيات: محمد آل سحمان`;
+  const body={
+    ok:`يسرّنا إبلاغكم بتميّز ابنكم في منصة «جاهز للتحصيلي» لمادة الرياضيات، إذ بلغ متوسط درجاته ${pct}. ما شاء الله تبارك الله.\nنشكر لكم حسن متابعتكم، ونرجو تشجيعه على الاستمرار في هذا التميّز.`,
+    mid:`نفيدكم بأن ابنكم يسير بمستوى جيد في منصة «جاهز للتحصيلي» لمادة الرياضيات، بمتوسط ${pct}.\nنأمل تشجيعه على إعادة التدريب في الدروس التي لم يتقنها؛ ليصل إلى الإتقان بإذن الله تعالى.`,
+    low:`نفيدكم بأن متوسط ابنكم في منصة «جاهز للتحصيلي» لمادة الرياضيات بلغ ${pct}، ويحتاج إلى متابعتكم الكريمة.\nنرجو حثّه على مشاهدة شروحات منصة عيان: ayyan.binsehman.com\nثم إعادة التدريب على المنصة: math.binsehman.com`,
+    none:`نفيدكم بأن ابنكم لم يدخل منصة «جاهز للتحصيلي» لمادة الرياضيات حتى الآن.\nنرجو حثّه على الدخول ببريده المدرسي عبر الرابط: math.binsehman.com\nوالتدرّب استعدادًا للاختبار التحصيلي.`
+  }[s.cat];
+  return head+body+sign;
+}
+
+function render(){
+  const fc=$('fCls').value, fk=$('fCat').value||tileCat, q=$('q').value.trim().toLowerCase();
+  const scope=students.filter(s=>!fc||s.cls===fc);
+  const cnt=k=>scope.filter(s=>s.cat===k).length, entered=scope.filter(s=>s.tries).length;
+  $('tiles').innerHTML=[['','الطلاب',scope.length,''],['entered','دخلوا المنصة',entered,''],['ok','متميز',cnt('ok'),'t-ok'],['low','يحتاج متابعة',cnt('low'),'t-low'],['none','لم يبدأ',cnt('none'),'t-none']]
+    .map(([k,l,v,c])=>`<button class="tile ${c} ${tileCat===k&&k?'on':''}" data-k="${k}"><b>${ar(v)}</b><span>${l}</span></button>`).join('');
+  $('tiles').querySelectorAll('.tile').forEach(t=>t.onclick=()=>{const k=t.dataset.k;tileCat=(tileCat===k||!k)?'':k;$('fCat').value='';render()});
+  let list=scope.filter(s=>(!fk||(fk==='entered'?s.tries>0:s.cat===fk))&&(!q||s.name.toLowerCase().includes(q)||s.email.includes(q)));
+  const val={rank:s=>s.rank,name:s=>s.name,cls:s=>s.cls,avg:s=>s.avg??-1,tries:s=>s.tries,lessons:s=>s.lessons.length,last:s=>s.lastI,cat:s=>['ok','mid','low','none'].indexOf(s.cat)};
+  const f=val[sortKey]||val.avg;list.sort((x,y)=>{const a=f(x),b=f(y);return (a>b?1:a<b?-1:0)*sortDir});
+  $('rows').innerHTML=list.length?list.map(s=>{
+    const [cl,cc]=CAT[s.cat], pct=s.avg==null?'—':ar(Math.round(s.avg*100)+'%');
+    const col=s.cat==='ok'?'var(--ok)':s.cat==='mid'?'var(--warn)':'var(--bad)';
+    const wa=/^9665\d{8}$/.test(s.phone)?`<a class="wa" target="_blank" rel="noopener" title="إرسال رسالة واتساب لولي الأمر" aria-label="إرسال رسالة واتساب لولي الأمر" href="https://wa.me/${s.phone}?text=${encodeURIComponent(message(s))}"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.9 3 3 6.6 3 11c0 2.3 1.1 4.4 2.9 5.9L5 21l4.3-2.2c.9.2 1.8.3 2.7.3 5.1 0 9-3.6 9-8.1S17.1 3 12 3z"/></svg></a>`:`<span class="nophone">رقم غير مكتمل</span>`;
+    return `<tr data-e="${esc(s.email)}" style="cursor:pointer"><td class="num">${ar(s.rank)}</td><td class="name">${esc(s.name)}<small>${esc(s.parent)}</small></td><td>${esc(s.cls)}</td>
+      <td class="num">${pct}${s.avg!=null?`<span class="meter"><i style="width:${Math.round(s.avg*100)}%;background:${col}"></i></span>`:''}</td>
+      <td class="num">${ar(s.tries)}</td><td class="num">${ar(s.lessons.length)}</td><td class="num" style="font-size:13px">${s.last?esc(fmtT(s.last)):'—'}</td>
+      <td><span class="chip ${cc}">${cl}</span></td><td>${wa}</td></tr>`}).join(''):'<tr><td colspan="9" style="text-align:center;color:var(--muted)">لا يوجد طلاب بهذا التصفية.</td></tr>';
+  $('rows').querySelectorAll('tr[data-e]').forEach(tr=>tr.onclick=e=>{
+    if(e.target.closest('a'))return;
+    const nx=tr.nextElementSibling;if(nx&&nx.classList.contains('detail')){nx.remove();return}
+    const s=students.find(x=>x.email===tr.dataset.e), keys=Object.keys(s.best);
+    const d=document.createElement('tr');d.className='detail';
+    d.innerHTML=`<td colspan="9"><div style="font-family:var(--head);font-size:13px;color:var(--muted);margin-bottom:6px;direction:ltr;text-align:right">${esc(s.email)}</div>${keys.length?`<div class="lessons">${keys.map(k=>`<span>${esc(ar(k))}: ${ar(Math.round(s.best[k]*100)+'%')}</span>`).join('')}</div>`:'لم يحل أي درس بعد.'}</td>`;
+    tr.after(d)});
+}
+
+document.querySelectorAll('th[data-s]').forEach(th=>th.onclick=()=>{const k=th.dataset.s;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=(k==='name'||k==='cls'||k==='rank'||k==='cat')?1:-1}render()});
+['fCls','fCat'].forEach(id=>$(id).onchange=()=>{tileCat='';render()});$('q').oninput=render;
+$('refresh').onclick=load;
+
+/* إضافة طالب */
+const dlg=$('dlg');
+$('addBtn').onclick=()=>{$('aMsg').innerHTML='';$('addForm').reset();dlg.showModal()};
+$('aClose').onclick=()=>dlg.close();
+$('addForm').onsubmit=async e=>{
+  e.preventDefault();const m=$('aMsg');
+  const email=$('aEmail').value.trim().toLowerCase(), name=$('aName').value.trim(), cls=$('aCls').value, parent=$('aParent').value.trim();
+  let phone=$('aPhone').value.replace(/\D/g,'');if(/^05\d{8}$/.test(phone))phone='966'+phone.slice(1);
+  if(!/^\S+@\S+\.\S+$/.test(email)||!name){m.innerHTML='<div class="msg bad">اكتب البريد والاسم بشكل صحيح.</div>';return}
+  if(phone&&!/^9665\d{8}$/.test(phone)){m.innerHTML='<div class="msg bad">رقم الجوال غير صحيح. اكتبه بصيغة 05xxxxxxxx.</div>';return}
+  if(students.some(s=>s.email===email)){m.innerHTML='<div class="msg bad">هذا البريد مسجّل مسبقًا.</div>';return}
+  const b=$('aSave');b.disabled=true;b.textContent='جارٍ الحفظ…';
+  try{
+    const r=await api({action:'add',key:KEY,email,name,cls,parent,phone});
+    if(r.ok){m.innerHTML=`<div class="msg ok">أُضيف ${esc(name)} إلى ${esc(cls)}، ويستطيع الدخول الآن.</div>`;$('addForm').reset();load()}
+    else m.innerHTML=`<div class="msg bad">${r.error==='exists'?'هذا البريد مسجّل مسبقًا.':r.error==='bad_key'?'رمز المعلم غير صحيح.':'تحقق من البيانات.'}</div>`;
+  }catch(err){m.innerHTML='<div class="msg bad">لم يتأكد الحفظ. حدّث اللوحة وتحقق من وجود الطالب قبل المحاولة مرة أخرى.</div>'
+  }finally{b.disabled=false;b.textContent='حفظ الطالب'}
+};
+
+load();
+</script>
+</body>
+</html>
