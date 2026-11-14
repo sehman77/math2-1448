@@ -217,6 +217,14 @@ addEventListener('hashchange', () => {
   route();
 });
 route(); flush();
+/* تحديث اسم الطالب وفصله من الجدول عند كل فتح، فيظهر أي تعديل يجريه المعلم */
+(async () => {
+  if (!student || !API_URL) return;
+  try {
+    const r = await api({ action: 'check', email: student.email });
+    if (r.ok && (r.name !== student.name || r.cls !== student.cls)) { student = { ...student, name: r.name, cls: r.cls }; store(SKEY, student); header(); }
+  } catch (e) {}
+})();
 
 /* ---------- الأرقام العربية في كل الصفحة ---------- */
 const AD = '٠١٢٣٤٥٦٧٨٩';
