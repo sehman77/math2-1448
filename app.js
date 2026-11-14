@@ -54,12 +54,17 @@ function header() {
 }
 function viewLogin() {
   app.innerHTML = `<div class="login card">
-    <h2>أهلًا بك</h2>
+    <h2>دخول الطلاب</h2>
     <p class="muted">ادخل ببريدك الإلكتروني المسجّل عند المعلم، لتُحفظ نتائجك باسمك.</p>
     <label for="em">البريد الإلكتروني</label>
     <input id="em" type="email" autocomplete="email" placeholder="name@example.com">
     <button class="btn pri" id="go" style="width:100%">دخول</button>
     <div id="m"></div>
+  </div>
+  <div class="login card teacher">
+    <h2>دخول المعلم</h2>
+    <p class="muted">لوحة متابعة الطلاب وإرسال الرسائل لأولياء الأمور.</p>
+    <a class="btn" href="https://claude.ai/artifact/H2oQC6raBvM2GmeF2ffoJY" target="_blank" rel="noopener" style="width:100%;text-decoration:none">فتح لوحة المتابعة</a>
   </div>`;
   const em = app.querySelector('#em'), go = app.querySelector('#go'), m = app.querySelector('#m');
   const submit = async () => {
