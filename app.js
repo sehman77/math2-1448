@@ -39,7 +39,11 @@ async function record(lesson, score, total) {
   await flush();
   return load(QKEY, []).length ? 'pending' : 'saved';
 }
-const syncText = s => s === 'saved' ? '✓ أُرسلت نتيجتك إلى معلمك' : s === 'pending' ? 'لم تُرسل النتيجة بعد، وستُرسل تلقائيًّا عند عودة الاتصال' : 'وضع التجربة: النتيجة محفوظة في جهازك فقط';
+const syncText = s => s === 'saved' ? 'أُرسلت نتيجتك إلى معلمك بنجاح' : s === 'pending' ? 'لم تُرسل النتيجة بعد، وستُرسل تلقائيًّا عند عودة الاتصال' : 'وضع التجربة: النتيجة محفوظة في جهازك فقط';
+function showSync(el, state) {
+  el.className = 'sync ' + state;
+  el.innerHTML = `<span class="ic"><b>${state === 'saved' ? '✓' : state === 'pending' ? '!' : 'i'}</b></span><span>${syncText(state)}</span>`;
+}
 
 /* ---------- الدخول ---------- */
 function header() {
@@ -156,13 +160,13 @@ function viewLesson(id) {
   const qz = app.querySelector('#qz');
   qz.appendChild(quiz(d.quiz, async (sc, per, box) => {
     const s = document.createElement('div'); s.className = 'score';
-    s.innerHTML = `<b>${sc} / ${d.quiz.length}</b><span>${sc === d.quiz.length ? 'إتقان كامل!' : sc >= 2 ? 'جيد. راجع السؤال الذي أخطأت فيه.' : 'راجع القانون والخطأ الشائع ثم أعد المحاولة.'}</span><span class="sync muted">جارٍ الحفظ…</span><span style="flex:1"></span><button class="btn" id="ag">أعد المحاولة</button>`;
+    s.innerHTML = `<b>${sc} / ${d.quiz.length}</b><span>${sc === d.quiz.length ? 'إتقان كامل!' : sc >= 2 ? 'جيد. راجع السؤال الذي أخطأت فيه.' : 'راجع القانون والخطأ الشائع ثم أعد المحاولة.'}</span><span class="sync">جارٍ إرسال نتيجتك إلى معلمك…</span><span style="flex:1"></span><button class="btn" id="ag">أعد المحاولة</button>`;
     box.prepend(s); s.querySelector('#ag').onclick = () => viewLesson(id);
     const ids = readyIn(c), i = ids.indexOf(id), nxt = ids[i + 1];
     const nx = document.createElement('div'); nx.className = 'bar-row';
     nx.innerHTML = nxt ? `<button class="btn pri">الدرس التالي: ${lessonTitle(nxt)} ←</button>` : `<button class="btn pri">اختبار الفصل ${c.n} ←</button>`;
     nx.firstChild.onclick = () => location.hash = nxt ? 'l-' + nxt : 'c-' + c.n; box.appendChild(nx);
-    s.querySelector('.sync').textContent = syncText(await record(id, sc, d.quiz.length));
+    showSync(s.querySelector('.sync'), await record(id, sc, d.quiz.length));
   }));
 }
 
@@ -184,12 +188,12 @@ function viewTest(tid) {
     const ids = Object.keys(by).sort();
     const weak = ids.filter(i => by[i][0] / by[i][1] < .6);
     const r = document.createElement('div');
-    r.innerHTML = `<div class="score"><b>${sc} / ${qs.length}</b><span>${Math.round(sc / qs.length * 100)}٪</span><span class="sync muted">جارٍ الحفظ…</span></div>
+    r.innerHTML = `<div class="score"><b>${sc} / ${qs.length}</b><span>${Math.round(sc / qs.length * 100)}٪</span><span class="sync">جارٍ إرسال نتيجتك إلى معلمك…</span></div>
     <h3>نتيجتك في كل درس</h3>
     <div class="rep">${ids.map(i => { const [a, n] = by[i], x = a / n; return `<div><span>${i} ${lessonTitle(i)}</span><span class="meter"><i class="${x < .5 ? 'lo' : x < .85 ? 'mid' : ''}" style="width:${x * 100}%"></i></span><span>${a}/${n}</span></div>` }).join('')}</div>
     ${weak.length ? `<p>راجع هذه الدروس: ${weak.map(i => `<a href="#l-${i}">${lessonTitle(i)}</a>`).join('، ')}</p>` : '<p>أداء ممتاز في كل الدروس.</p>'}`;
     b.prepend(r); scrollTo({ top: 0, behavior: 'smooth' });
-    r.querySelector('.sync').textContent = syncText(await record(t.key, sc, qs.length));
+    showSync(r.querySelector('.sync'), await record(t.key, sc, qs.length));
   }, true);
   app.querySelector('#qz').appendChild(box);
   tick(); clearInterval(timerId);
