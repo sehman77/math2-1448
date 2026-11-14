@@ -65,7 +65,7 @@ function viewLogin() {
   </div>
   <div class="login card teacher">
     <h2>دخول المعلم</h2>
-    <p class="muted">لوحة متابعة الطلاب وإرسال الرسائل لأولياء الأمور.</p>
+    <p class="muted">خاص بمعلم الرياضيات في <b>متوسطة بدر الكبرى</b>: لوحة متابعة الطلاب، وإرسال الرسائل لأولياء الأمور.</p>
     <a class="btn" href="teacher.html" style="width:100%;text-decoration:none;color:var(--brand)">فتح لوحة المتابعة</a>
   </div>`;
   const em = app.querySelector('#em'), go = app.querySelector('#go'), m = app.querySelector('#m');
