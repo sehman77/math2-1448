@@ -1,5 +1,5 @@
 const f=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
-const m=s=>`<span class="mx">${s}</span>`;
+const m=s=>`<span class="mx">${s.replace(/([\u0600-\u06FF]+)/g,'\u200E$1\u200E')}</span>`;
 const ov=s=>`<span class="ov">${s}</span>`;
 const p=(b,e)=>`${b}<sup>${e}</sup>`;
 const mix=(w,a,b)=>`${w}${f(a,b)}`;
