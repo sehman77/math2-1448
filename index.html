@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>جاهز للتحصيلي | رياضيات الثاني المتوسط</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#F4F6F5;--card:#FFFFFF;--sunk:#EAEFEE;--ink:#17262A;--muted:#5C6D70;--line:#D8E0DF;
+  --brand:#0E5E66;--brand-ink:#FFFFFF;--brand-soft:#E0EFEF;
+  --warn:#9A5B05;--warn-soft:#FDF1DC;--ok:#1B7F4E;--ok-soft:#DFF3E8;--bad:#B3362F;--bad-soft:#F9E2E0;
+  --head:"Cairo",Tahoma,sans-serif;--text:"Noto Naskh Arabic","Traditional Arabic",serif;--r:12px;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0F1719;--card:#162124;--sunk:#1C2A2D;--ink:#E5EEEE;--muted:#9BB0B2;--line:#2A3B3E;
+  --brand:#4FB3B9;--brand-ink:#0F1719;--brand-soft:#173638;
+  --warn:#E7AE52;--warn-soft:#3A2D16;--ok:#57C98E;--ok-soft:#163626;--bad:#EF7B73;--bad-soft:#3D1D1B;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--text);font-size:18px;line-height:1.85}
+h1,h2,h3,.btn,.tag,.num,label,.k{font-family:var(--head)}
+h1,h2,h3{margin:0;line-height:1.4}
+button,input{font:inherit;color:inherit}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px;border-radius:6px}
+
+header.top{background:var(--brand);color:var(--brand-ink)}
+header.top .wrap{display:flex;align-items:center;gap:12px;padding-block:14px;flex-wrap:wrap}
+header.top h1{font-size:22px;font-weight:800}
+header.top .sub{font-family:var(--head);font-size:13px;opacity:.85}
+header.top .sp{flex:1}
+header.top .who{font-family:var(--head);font-size:14px;text-align:left}
+header.top button{background:transparent;border:1px solid currentColor;color:inherit;border-radius:8px;padding:2px 10px;font-size:13px;cursor:pointer;font-family:var(--head)}
+
+main{padding-block:22px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 18px;font-weight:700;font-size:16px;cursor:pointer}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.btn:disabled{opacity:.5;cursor:default}
+.muted{color:var(--muted)}
+.back{background:none;border:0;color:var(--brand);font-family:var(--head);font-weight:700;padding:0;margin-bottom:12px;cursor:pointer;font-size:15px}
+
+/* login */
+.login{max-width:440px;margin:40px auto}
+.login h2{font-size:24px;margin-bottom:6px}
+.login input{width:100%;direction:ltr;text-align:left;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:10px 14px;font-family:var(--head);font-size:17px;margin:8px 0 12px}
+.msg{margin-top:12px;padding:10px 14px;border-radius:10px;font-size:16px}
+.msg.bad{background:var(--bad-soft)} .msg.info{background:var(--sunk)}
+
+/* home */
+.sec-h{display:flex;align-items:baseline;gap:10px;margin:26px 0 10px}
+.sec-h h2{font-size:21px}
+.tests{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.test{display:flex;flex-direction:column;gap:4px;text-align:right;cursor:pointer}
+.test b{font-family:var(--head);font-size:17px}
+.test span{color:var(--muted);font-size:15px}
+.test:hover{border-color:var(--brand)}
+.chap{margin-bottom:14px;padding:0;overflow:hidden}
+.chap summary{list-style:none;cursor:pointer;display:flex;gap:12px;align-items:center;padding:14px 18px;font-family:var(--head)}
+.chap summary::-webkit-details-marker{display:none}
+.chap summary .n{color:var(--brand);font-weight:800;font-size:14px;white-space:nowrap}
+.chap summary .t{font-weight:700;font-size:17px;flex:1}
+.chap summary .tag{font-size:12px;background:var(--sunk);color:var(--muted);padding:1px 10px;border-radius:99px;white-space:nowrap}
+.chap ul{list-style:none;margin:0;padding:0 8px 8px}
+.chap li button{width:100%;display:flex;gap:12px;align-items:center;text-align:right;background:none;border:0;border-top:1px solid var(--line);padding:10px 10px;cursor:pointer;font-size:17px}
+.chap li button:hover:not(:disabled){background:var(--sunk)}
+.chap li button:disabled{cursor:default;color:var(--muted)}
+.chap .num{color:var(--muted);font-size:14px;min-width:2.6em}
+.chap .tt{flex:1}
+.mark{font-family:var(--head);font-size:13px;padding:1px 9px;border-radius:99px;white-space:nowrap}
+.mark.ok{background:var(--ok-soft);color:var(--ok)} .mark.mid{background:var(--warn-soft);color:var(--warn)} .mark.lo{background:var(--bad-soft);color:var(--bad)}
+
+/* lesson */
+.ltitle .k{color:var(--brand);font-size:14px;font-weight:700}
+.ltitle h2{font-size:clamp(24px,5vw,30px)}
+.ltitle p{margin:4px 0 0;color:var(--muted)}
+.box{margin-top:16px;border-radius:var(--r);padding:16px 20px;border:1px solid var(--line);background:var(--card)}
+.box .k{font-weight:800;font-size:15px;margin-bottom:4px;display:block}
+.box.rule{border:2px solid var(--brand);background:var(--brand-soft)}
+.box.rule .k{color:var(--brand)}
+.box.warn{border-color:var(--warn);background:var(--warn-soft)}
+.box.warn .k{color:var(--warn)}
+.rows{display:grid;gap:6px;margin-top:6px}
+.rows div{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.rows small{font-family:var(--head);color:var(--muted);font-size:13px;min-width:5em}
+.wrong,.right{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border-radius:8px;margin-top:8px;background:var(--card)}
+.wrong .ic{color:var(--bad);font-weight:800} .right .ic{color:var(--ok);font-weight:800}
+.vocab{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.vocab span{font-family:var(--head);font-size:13px;background:var(--sunk);border-radius:99px;padding:2px 10px;color:var(--muted)}
+
+/* math */
+.mx{display:inline-flex;align-items:center;gap:.08em;direction:ltr;unicode-bidi:isolate;white-space:nowrap;font-family:"Cairo",sans-serif;font-weight:600;font-size:.95em}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-size:.82em;line-height:1.15;margin:0 .12em}
+.fr>span:first-child{border-bottom:1.6px solid currentColor;padding:0 .18em}
+.fr>span:last-child{padding:0 .18em}
+.ov{text-decoration:overline;text-decoration-thickness:1.5px}
+.mx sup{font-size:.7em;line-height:0;position:relative;top:-.15em}
+
+/* quiz */
+.q{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:12px}
+.qt{font-weight:700;margin-bottom:10px;display:flex;gap:10px}
+.qt .k{color:var(--muted);min-width:1.4em}
+.qt .from{display:block;font-family:var(--head);font-weight:500;font-size:13px;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:560px){.opts{grid-template-columns:1fr}}
+.opt{text-align:right;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;line-height:1.7}
+.opt:hover:not(:disabled){border-color:var(--brand)}
+.opt.pick{border-color:var(--brand);background:var(--brand-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.why{margin-top:8px;font-size:16px;color:var(--muted)}
+.bar-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.score{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:14px 18px;border-radius:var(--r);background:var(--sunk);margin-bottom:14px}
+.score b{font-family:var(--head);font-size:28px}
+.sync{font-family:var(--head);font-size:13px}
+.timer{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0;display:flex;justify-content:space-between;align-items:center;font-family:var(--head);border-bottom:1px solid var(--line);margin-bottom:12px}
+.timer b{font-size:20px;font-variant-numeric:tabular-nums}
+.timer b.low{color:var(--bad)}
+.rep{display:grid;gap:6px;margin:10px 0}
+.rep div{display:grid;grid-template-columns:minmax(0,1fr) 110px 3em;gap:10px;align-items:center;font-size:16px}
+.meter{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ok)}
+.meter i.mid{background:var(--warn)} .meter i.lo{background:var(--bad)}
+footer{color:var(--muted);font-size:14px;text-align:center;padding:30px 16px;font-family:var(--head)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div><h1>جاهز للتحصيلي</h1><div class="sub">رياضيات الصف الثاني المتوسط · الفصل الدراسي الأول ١٤٤٨هـ</div></div>
+  <span class="sp"></span><div class="who" id="who"></div>
+</div></header>
+<main class="wrap" id="app"></main>
+<footer>إعداد: أ. محمد بن سحمان</footer>
+
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script src="chapters/ch1.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
