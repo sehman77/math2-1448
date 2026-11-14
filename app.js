@@ -39,10 +39,11 @@ async function record(lesson, score, total) {
   await flush();
   return load(QKEY, []).length ? 'pending' : 'saved';
 }
-const syncText = s => s === 'saved' ? 'أُرسلت نتيجتك إلى المعلم بنجاح' : s === 'pending' ? 'لم تُرسل النتيجة بعد، وستُرسل تلقائيًّا عند عودة الاتصال' : 'وضع التجربة: النتيجة محفوظة في جهازك فقط';
-function showSync(el, state) {
+const syncText = s => s === 'saved' ? 'أُرسلت النتيجة إلى المعلم' : s === 'pending' ? 'لم تُرسل النتيجة بعد، وستُرسل تلقائيًّا عند عودة الاتصال' : 'وضع التجربة: النتيجة محفوظة في جهازك فقط';
+const cheer = r => r === 1 ? 'ما شاء الله! إتقان كامل، واصل تميّزك.' : r >= .6 ? 'أحسنت! بقيت خطوة صغيرة وتصل إلى الإتقان.' : 'لا بأس، كل محاولة تقرّبك من الإتقان. راجع الدرس وأعد المحاولة.';
+function showSync(el, state, ratio) {
   el.className = 'sync ' + state;
-  el.innerHTML = `<span class="ic"><b>${state === 'saved' ? '✓' : state === 'pending' ? '!' : 'i'}</b></span><span>${syncText(state)}</span>`;
+  el.innerHTML = `<span class="ic"><b>${state === 'saved' ? '✓' : state === 'pending' ? '!' : 'i'}</b></span><span>${syncText(state)}<span class="cheer">${cheer(ratio)}</span></span>`;
 }
 
 /* ---------- الدخول ---------- */
@@ -166,7 +167,7 @@ function viewLesson(id) {
     const nx = document.createElement('div'); nx.className = 'bar-row';
     nx.innerHTML = nxt ? `<button class="btn pri">الدرس التالي: ${lessonTitle(nxt)} ←</button>` : `<button class="btn pri">اختبار الفصل ${c.n} ←</button>`;
     nx.firstChild.onclick = () => location.hash = nxt ? 'l-' + nxt : 'c-' + c.n; box.appendChild(nx);
-    showSync(s.querySelector('.sync'), await record(id, sc, d.quiz.length));
+    showSync(s.querySelector('.sync'), await record(id, sc, d.quiz.length), sc / d.quiz.length);
   }));
 }
 
@@ -193,7 +194,7 @@ function viewTest(tid) {
     <div class="rep">${ids.map(i => { const [a, n] = by[i], x = a / n; return `<div><span>${i} ${lessonTitle(i)}</span><span class="meter"><i class="${x < .5 ? 'lo' : x < .85 ? 'mid' : ''}" style="width:${x * 100}%"></i></span><span>${a}/${n}</span></div>` }).join('')}</div>
     ${weak.length ? `<p>راجع هذه الدروس: ${weak.map(i => `<a href="#l-${i}">${lessonTitle(i)}</a>`).join('، ')}</p>` : '<p>أداء ممتاز في كل الدروس.</p>'}`;
     b.prepend(r); scrollTo({ top: 0, behavior: 'smooth' });
-    showSync(r.querySelector('.sync'), await record(t.key, sc, qs.length));
+    showSync(r.querySelector('.sync'), await record(t.key, sc, qs.length), sc / qs.length);
   }, true);
   app.querySelector('#qz').appendChild(box);
   tick(); clearInterval(timerId);
