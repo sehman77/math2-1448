@@ -153,6 +153,24 @@ footer a:hover{text-decoration:underline}
 footer a.reach{display:inline-block;margin-top:10px;padding:6px 16px;border:1.5px solid var(--brand);border-radius:99px;background:var(--brand-soft);font-size:14px;direction:rtl}
 footer a.reach:hover{background:var(--brand);color:var(--brand-ink);text-decoration:none}
 footer .dua{font-family:"Aref Ruqaa","Traditional Arabic",serif;font-weight:700;font-size:24px;color:var(--brand);line-height:1.6;margin-bottom:6px}
+
+/* صفحة الدخول: صفحة واحدة بلا رأس، الشعار يمينًا وصناديق الدخول يسارًا */
+body.landing-on header.top{display:none}
+body.landing-on main{padding-block:0}
+body.landing-on footer{padding-block:4px 14px}
+.landing{min-height:calc(100vh - 150px);display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding-block:28px 8px}
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero-mark{width:min(190px,40vw);height:auto;aspect-ratio:1}
+.hero-ar{font-family:"Aref Ruqaa","Traditional Arabic",serif;font-weight:700;font-size:clamp(64px,10vw,112px);line-height:1;color:var(--brand);margin-top:6px}
+.hero-en{font-family:"Cairo",sans-serif;font-weight:800;font-size:clamp(14px,2vw,20px);letter-spacing:.5em;color:#E3A33A;direction:ltr;margin-top:8px;padding-left:.5em}
+.hero-tg{font-family:"Aref Ruqaa","Traditional Arabic",serif;font-weight:700;font-size:clamp(20px,2.6vw,28px);color:var(--ink);margin-top:14px}
+.hero-sub{font-family:var(--head);font-size:14px;color:var(--muted);margin-top:6px}
+.doors{display:grid;gap:14px}
+.doors .login{margin:0;max-width:none}
+.doors .login h2{font-size:21px}
+.doors .login p{margin:4px 0 10px;font-size:16px}
+.doors .login input{margin:0 0 10px}
+@media (max-width:820px){.landing{grid-template-columns:1fr;gap:18px;min-height:0}.hero-mark{width:120px}}
 </style>
 </head>
 <body>
@@ -163,13 +181,13 @@ footer .dua{font-family:"Aref Ruqaa","Traditional Arabic",serif;font-weight:700;
 <main class="wrap" id="app"></main>
 <footer><div class="dua">لا تنسونا من صالح دعائكم</div>فكرة وإعداد / <a href="https://reach.link/mohammed-bin-sehman" target="_blank" rel="noopener">محمد آل سحمان</a><div><a class="reach" href="https://reach.link/mohammed-bin-sehman" target="_blank" rel="noopener">🔗 me.binsehman.com</a></div></footer>
 
-<script src="config.js?v=23"></script>
-<script src="common.js?v=23"></script>
-<script src="chapters/ch1.js?v=23"></script>
-<script src="chapters/ch2.js?v=23"></script>
-<script src="chapters/ch3.js?v=23"></script>
-<script src="chapters/ch4.js?v=23"></script>
-<script src="chapters/ch5.js?v=23"></script>
-<script src="app.js?v=23"></script>
+<script src="config.js?v=24"></script>
+<script src="common.js?v=24"></script>
+<script src="chapters/ch1.js?v=24"></script>
+<script src="chapters/ch2.js?v=24"></script>
+<script src="chapters/ch3.js?v=24"></script>
+<script src="chapters/ch4.js?v=24"></script>
+<script src="chapters/ch5.js?v=24"></script>
+<script src="app.js?v=24"></script>
 </body>
 </html>

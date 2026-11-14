@@ -55,18 +55,29 @@ function header() {
   if (student) w.querySelector('#out').onclick = () => { student = null; store(SKEY, null); progress = {}; store(PKEY, {}); location.hash = ''; route() };
 }
 function viewLogin() {
-  app.innerHTML = `<div class="login card">
+  document.body.classList.add('landing-on');
+  app.innerHTML = `<div class="landing">
+  <section class="hero">
+    <svg class="hero-mark" viewBox="0 0 120 120" aria-hidden="true"><path d="M14 30 C 38 20, 62 22, 84 40" stroke="#0E5E66" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M36 25 C 34 9, 52 2, 60 6 C 56 18, 46 26, 36 25 Z" fill="#43B581"/><path d="M58 26 C 66 12, 84 12, 88 18 C 80 28, 68 31, 58 26 Z" fill="#6CCB9A"/><path d="M84 40 L 80 54" stroke="#0E5E66" stroke-width="5" stroke-linecap="round"/><circle cx="74" cy="80" r="28" fill="#E3A33A"/><circle cx="64" cy="68" r="7" fill="#FFFFFF" opacity=".28"/><path d="M61 81 l9 9 l17 -19" stroke="#FFFFFF" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="hero-ar">قِطاف</div>
+    <div class="hero-en">QITAF</div>
+    <div class="hero-tg">ازرَع جهدَك، تقطف تميُّزَك بإذن الله تعالى</div>
+    <div class="hero-sub">رياضيات الثاني المتوسط · متوسطة بدر الكبرى</div>
+  </section>
+  <section class="doors">
+  <div class="login card">
     <h2>دخول الطلاب</h2>
-    <p class="muted">ادخل ببريدك المدرسي، مثل: <bdi dir="ltr">s12345678@asrb.moe.gov.sa</bdi>، لتُحفظ نتائجك باسمك. ويستطيع طلاب وزارة التعليم من خارج المدرسة الدخول ببريدهم المدرسي أيضًا.</p>
-    <label for="em">البريد الإلكتروني</label>
-    <input id="em" type="email" autocomplete="email" placeholder="name@example.com">
+    <p class="muted">ادخل ببريدك المدرسي، ويستطيع طلاب وزارة التعليم من خارج المدرسة الدخول ببريدهم أيضًا.</p>
+    <input id="em" type="email" autocomplete="email" aria-label="البريد المدرسي" placeholder="s12345678@asrb.moe.gov.sa">
     <button class="btn pri" id="go" style="width:100%">دخول</button>
     <div id="m"></div>
   </div>
   <div class="login card teacher">
     <h2>دخول المعلم</h2>
-    <p class="muted">خاص بمعلم الرياضيات في <b>متوسطة بدر الكبرى</b>: لوحة متابعة الطلاب، وإرسال الرسائل لأولياء الأمور.</p>
+    <p class="muted">لمعلم الرياضيات في <b>متوسطة بدر الكبرى</b>: متابعة الطلاب ومراسلة أولياء الأمور.</p>
     <a class="btn" href="teacher.html" style="width:100%;text-decoration:none;color:var(--brand)">فتح لوحة المتابعة</a>
+  </div>
+  </section>
   </div>`;
   const em = app.querySelector('#em'), go = app.querySelector('#go'), m = app.querySelector('#m');
   const submit = async () => {
@@ -212,6 +223,7 @@ function viewTest(tid) {
 /* ---------- التنقل ---------- */
 function route() {
   clearInterval(timerId); header();
+  document.body.classList.remove('landing-on');
   if (!student) { viewLogin(); return }
   const h = location.hash.slice(1);
   if (h.startsWith('c-')) viewChapter(+h.slice(2));
