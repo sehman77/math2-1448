@@ -40,7 +40,7 @@ async function record(lesson, score, total) {
   return load(QKEY, []).length ? 'pending' : 'saved';
 }
 const syncText = s => s === 'saved' ? 'أُرسلت النتيجة إلى المعلم' : s === 'pending' ? 'لم تُرسل النتيجة بعد، وستُرسل تلقائيًّا عند عودة الاتصال' : 'وضع التجربة: النتيجة محفوظة في جهازك فقط';
-const cheer = r => r === 1 ? 'ما شاء الله! إتقان كامل، واصل تميّزك.' : r >= .6 ? 'أحسنت! بقيت خطوة صغيرة وتصل إلى الإتقان.' : 'لا بأس، كل محاولة تقرّبك من الإتقان. راجع الدرس وأعد المحاولة.';
+const cheer = r => r === 1 ? 'ما شاء الله! إتقان كامل، واصل تميّزك.' : r >= .6 ? 'أحسنت! بقيت خطوة صغيرة وتصل إلى الإتقان.' : 'لا بأس، كل محاولة تقرّبك من الإتقان بإذن الله تعالى. راجع الدرس وأعد المحاولة.';
 function showSync(el, state, ratio) {
   el.className = 'sync ' + state;
   el.innerHTML = `<span class="ic"><b>${state === 'saved' ? '✓' : state === 'pending' ? '!' : 'i'}</b></span><span>${syncText(state)}<span class="cheer">${cheer(ratio)}</span></span>`;
